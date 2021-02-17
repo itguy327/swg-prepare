@@ -3,6 +3,8 @@
 #Install the dependencies
 apt-get install alien autoconf automake autotools-dev binutils build-essential bzip2 elfutils expat g++ g++-multilib gawk gcc gcc-multilib ksh less lib32ncurses5 lib32z1 libaio-dev libc6 libc6-dev libc6-dev-i386 libc6-i386 libelf-dev libltdl-dev libmotif-common libmrm4 libmrm4:i386 libodbcinstq4-1 libpth-dev libpthread-stubs0-dev libstdc++5 libuil4 libuil4:i386 libxm4 libxm4:i386 rlwrap rpm sysstat unixodbc unixodbc-dev unzip zenity zlibc -y
 
+apt install libaio*
+
 #Setup groups and an oracle user
 groupadd oinstall
 groupadd dba
@@ -60,14 +62,17 @@ echo 'export LD_LIBRARY_PATH=$ORACLE_HOME/lib:/lib:/usr/lib:/usr/lib64;' | tee -
 echo 'export CLASSPATH=$ORACLE_HOME/JRE:$ORACLE_HOME/jlib:$ORACLE_HOME/rdbms/jlib;' | tee -a /home/oracle/.bashrc
 
 #let's download and unpack the binary
-wget https://github.com/tekaohswg/gdown.pl/archive/v1.4.zip
-unzip v1.4.zip
-rm v1.4.zip
-./gdown.pl-1.4/gdown.pl 'https://drive.google.com/open?id=17wfbfZuL90z4Z_FZPHK7l8FecepZ3dyP' 'LINUX.X64_180000_db_home.zip'
-./gdown.pl-1.4/gdown.pl 'https://drive.google.com/open?id=1xb0S2cYAmXZurIkzuUuVOPDw-CcjDioL' 'oracle-instantclient12.2-basiclite-12.2.0.1.0-1.i386.rpm'
-./gdown.pl-1.4/gdown.pl 'https://drive.google.com/open?id=15s_e_Z4BMxpAqsIUFwyO1tbM9SS1XFVZ' 'oracle-instantclient12.2-devel-12.2.0.1.0-1.i386.rpm'
-./gdown.pl-1.4/gdown.pl 'https://drive.google.com/open?id=1FUVe89ZObP_LQN63xD1kQEpBgTmV3wbX' 'oracle-instantclient12.2-sqlplus-12.2.0.1.0-1.i386.rpm'
-rm -r gdown.pl-1.4
+#wget https://github.com/tekaohswg/gdown.pl/archive/v1.4.zip
+#unzip v1.4.zip
+#rm v1.4.zip
+wget https://raw.githubusercontent.com/circulosmeos/gdown.pl/master/gdown.pl
+chmod +x gdown.pl
+perl gdown.pl 'https://drive.google.com/open?id=17wfbfZuL90z4Z_FZPHK7l8FecepZ3dyP' 'LINUX.X64_180000_db_home.zip'
+perl gdown.pl 'https://drive.google.com/open?id=1xb0S2cYAmXZurIkzuUuVOPDw-CcjDioL' 'oracle-instantclient12.2-basiclite-12.2.0.1.0-1.i386.rpm'
+perl gdown.pl 'https://drive.google.com/open?id=15s_e_Z4BMxpAqsIUFwyO1tbM9SS1XFVZ' 'oracle-instantclient12.2-devel-12.2.0.1.0-1.i386.rpm'
+perl gdown.pl 'https://drive.google.com/open?id=1FUVe89ZObP_LQN63xD1kQEpBgTmV3wbX' 'oracle-instantclient12.2-sqlplus-12.2.0.1.0-1.i386.rpm'
+
+#rm -r gdown.pl-1.4
 mkdir -p /u01/app/oracle/product/18/dbhome_1
 unzip -d /u01/app/oracle/product/18/dbhome_1/ LINUX.X64_180000_db_home.zip
 chown -R oracle:oinstall /u01
